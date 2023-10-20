@@ -1,9 +1,11 @@
 import { Container, Grid, Title } from '@mantine/core';
+import { useNavigate } from 'react-router';
 import Logo from '../../../images/logo-udesc.png';
 import MenuOptions from './MenuOptions';
 import UserOptions from './UserOptions';
 
 function Header() {
+  const navigate = useNavigate();
   return (
     <Container fluid h={70} bg="#79AC78">
       <Grid h={70} align="stretch">
@@ -19,7 +21,14 @@ function Header() {
           display="flex"
           style={{ alignItems: 'center' }}
         >
-          <Title c="white" fw="bold" size={25} order={1}>
+          <Title
+            c="white"
+            fw="bold"
+            size={25}
+            order={1}
+            onClick={() => navigate('/')}
+            style={{ cursor: 'pointer' }}
+          >
             UniProjetar
           </Title>
         </Grid.Col>
