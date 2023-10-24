@@ -7,6 +7,7 @@ import './index.css';
 import './custom.scss';
 import RouterSwitch from './routes';
 import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
