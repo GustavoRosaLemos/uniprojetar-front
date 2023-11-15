@@ -20,6 +20,7 @@ module.exports = {
   },
   rules: {
     'max-len': ['error', { code: 120 }],
+    'react/jsx-props-no-spreading': 'off',
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
     'import/prefer-default-export': 'off',

@@ -11,6 +11,7 @@ import {
 import { BsFileEarmarkText } from 'react-icons/bs';
 import { Project } from '../../../../shared/types/project';
 import CustomTable from '../../../../shared/components/custom/CustomTable';
+import { currencyBRL } from '../../../../utils';
 
 interface ProjectProps {
   project: Project;
@@ -18,7 +19,7 @@ interface ProjectProps {
 
 function ProjectItem({ project }: ProjectProps) {
   return (
-    <Accordion.Item value={project.title}>
+    <Accordion.Item value={project.nome + project.id}>
       <Accordion.Control mr="lg">
         <Group>
           <BsFileEarmarkText size="40" color="BDBDBD" />
@@ -27,7 +28,7 @@ function ProjectItem({ project }: ProjectProps) {
               Projeto / Coordenador
             </Text>
             <Text c="#7A7A7A" fw="bold">
-              Projeto A / Prof. Fulano de Tal
+              {project.nome} / Prof. {project.coordenador}
             </Text>
           </Flex>
           <Flex direction="column">
@@ -35,7 +36,7 @@ function ProjectItem({ project }: ProjectProps) {
               Exercício
             </Text>
             <Text c="#7A7A7A" fw="bold">
-              2023
+              {project.anoExercicio}
             </Text>
           </Flex>
           <Flex direction="column">
@@ -43,7 +44,7 @@ function ProjectItem({ project }: ProjectProps) {
               Empenho
             </Text>
             <Text c="#7A7A7A" fw="bold">
-              xxxx/2023
+              {project.anoInicioEmpenho}/{project.anoFinalEmpenho}
             </Text>
           </Flex>
           <Flex direction="column">
@@ -51,7 +52,7 @@ function ProjectItem({ project }: ProjectProps) {
               Previsto
             </Text>
             <Text c="#7A7A7A" fw="bold">
-              R$ 3.645,00
+              {currencyBRL(project.valorPrevisto)}
             </Text>
           </Flex>
           <Flex direction="column">
@@ -59,7 +60,7 @@ function ProjectItem({ project }: ProjectProps) {
               Executado
             </Text>
             <Text c="#7A7A7A" fw="bold">
-              R$ 3.645,00
+              {currencyBRL(project.valorExecutado)}
             </Text>
           </Flex>
           <Flex direction="column">
@@ -67,7 +68,7 @@ function ProjectItem({ project }: ProjectProps) {
               Saldo
             </Text>
             <Text c="#7A7A7A" fw="bold">
-              R$ 0,00
+              {currencyBRL(project.valorSaldo)}
             </Text>
           </Flex>
           <Flex direction="column">
@@ -75,7 +76,7 @@ function ProjectItem({ project }: ProjectProps) {
               Total
             </Text>
             <Text c="#219653" fw="bold">
-              R$ 11.355,00
+              {currencyBRL(project.valorTotal)}
             </Text>
           </Flex>
         </Group>
@@ -86,11 +87,11 @@ function ProjectItem({ project }: ProjectProps) {
           <CustomTable.Thead>
             <CustomTable.Tr>
               <CustomTable.Th />
-              <CustomTable.Th>Material de Consumo</CustomTable.Th>
-              <CustomTable.Th>Passagens</CustomTable.Th>
-              <CustomTable.Th>Serviços Terceiros P/ Física</CustomTable.Th>
-              <CustomTable.Th>Serviços Terceiros P/ Jurídica</CustomTable.Th>
-              <CustomTable.Th>Equipamentos e Material</CustomTable.Th>
+              {project.itens.map((item) => (
+                <CustomTable.Th key={`${item.id}${item.nome}`}>
+                  {item.nome}
+                </CustomTable.Th>
+              ))}
             </CustomTable.Tr>
           </CustomTable.Thead>
           <CustomTable.Tbody>
@@ -100,11 +101,11 @@ function ProjectItem({ project }: ProjectProps) {
                   Previsto
                 </Text>
               </CustomTable.Td>
-              <CustomTable.Td>R$ 3.645,00</CustomTable.Td>
-              <CustomTable.Td>R$ 2.000,00</CustomTable.Td>
-              <CustomTable.Td>R$ 2.355,00</CustomTable.Td>
-              <CustomTable.Td>R$ 4.000,00</CustomTable.Td>
-              <CustomTable.Td>R$ 3.000,00</CustomTable.Td>
+              {project.itens.map((item) => (
+                <CustomTable.Th key={`${item.id}${item.valorPrevisto}`}>
+                  {currencyBRL(item.valorPrevisto)}
+                </CustomTable.Th>
+              ))}
             </CustomTable.Tr>
             <CustomTable.Tr>
               <CustomTable.Td>
@@ -112,11 +113,11 @@ function ProjectItem({ project }: ProjectProps) {
                   Executado
                 </Text>
               </CustomTable.Td>
-              <CustomTable.Td>R$ 3.645,00</CustomTable.Td>
-              <CustomTable.Td>R$ 2.000,00</CustomTable.Td>
-              <CustomTable.Td>R$ 2.355,00</CustomTable.Td>
-              <CustomTable.Td>R$ 4.000,00</CustomTable.Td>
-              <CustomTable.Td>R$ 3.000,00</CustomTable.Td>
+              {project.itens.map((item) => (
+                <CustomTable.Th key={`${item.id}${item.valorExecutado}`}>
+                  {currencyBRL(item.valorExecutado)}
+                </CustomTable.Th>
+              ))}
             </CustomTable.Tr>
             <CustomTable.Tr>
               <CustomTable.Td>
@@ -124,11 +125,11 @@ function ProjectItem({ project }: ProjectProps) {
                   Saldo
                 </Text>
               </CustomTable.Td>
-              <CustomTable.Td>R$ 3.645,00</CustomTable.Td>
-              <CustomTable.Td>R$ 2.000,00</CustomTable.Td>
-              <CustomTable.Td>R$ 2.355,00</CustomTable.Td>
-              <CustomTable.Td>R$ 4.000,00</CustomTable.Td>
-              <CustomTable.Td>R$ 3.000,00</CustomTable.Td>
+              {project.itens.map((item) => (
+                <CustomTable.Th key={`${item.id}${item.valorSaldo}`}>
+                  {currencyBRL(item.valorSaldo)}
+                </CustomTable.Th>
+              ))}
             </CustomTable.Tr>
           </CustomTable.Tbody>
         </CustomTable>
@@ -140,7 +141,7 @@ function ProjectItem({ project }: ProjectProps) {
                   Total Previsto
                 </Text>
                 <Text c="#7a7a7a" ta="right" fw={600}>
-                  R$ 15.000,00
+                  {currencyBRL(project.valorPrevisto)}
                 </Text>
               </Group>
               <Group justify="space-between">
@@ -148,7 +149,7 @@ function ProjectItem({ project }: ProjectProps) {
                   Total Executado
                 </Text>
                 <Text c="#7a7a7a" ta="right" fw={600}>
-                  R$ 3.645,00
+                  {currencyBRL(project.valorExecutado)}
                 </Text>
               </Group>
               <Group justify="space-between">
@@ -156,7 +157,7 @@ function ProjectItem({ project }: ProjectProps) {
                   Saldo Total
                 </Text>
                 <Text c="#7a7a7a" ta="right" fw={600}>
-                  R$ 3.645,00
+                  {currencyBRL(project.valorTotal)}
                 </Text>
               </Group>
             </Flex>
@@ -166,9 +167,7 @@ function ProjectItem({ project }: ProjectProps) {
               rows={3}
               description="Observações"
               disabled
-              value="Em 2023 foi realizada uma troca de rubrica. 
-              Transferidos R$ 3.645,00 de serviços de pessoa física para material de consumo, 
-              para pagamento dos 150 doffees breaks para capacitação de professores da rede municipal de Ibirama."
+              value={project.observacoes}
             />
           </Grid.Col>
         </Grid>
