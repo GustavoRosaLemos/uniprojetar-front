@@ -6,6 +6,7 @@ import HomePage from '../pages/Home';
 import ProjectsPage from '../pages/Projects';
 import ResourcesPage from '../pages/Resources';
 import MeasurementsPage from '../pages/Measurements';
+import LoginPage from '../pages/Login';
 
 function RouterSwitch() {
   return (
@@ -16,6 +17,7 @@ function RouterSwitch() {
         <Route path="/projetos" element={<ProjectsPage />} />
         <Route path="/recursos" element={<ResourcesPage />} />
         <Route path="/metricas" element={<MeasurementsPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Provider>
   );
