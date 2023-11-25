@@ -54,7 +54,9 @@ function ProjectModal({ opened, close, project }: NewProjectModalProps) {
           valorSaldo: 0,
         },
       ],
-      resources: [],
+      resources: [
+        { nome: '', descricao: '', especificoes: '', quantidade: 1, valor: 0 },
+      ],
     },
   });
 
