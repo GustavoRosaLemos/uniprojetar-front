@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   Button,
+  Divider,
   Fieldset,
   Grid,
   Group,
@@ -13,28 +14,38 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconTrash } from '@tabler/icons-react';
-import { Project } from '../../../../shared/types/project';
-import { getNextTenYearsString } from '../../../../utils';
+import { Project } from '../../types/project';
+import { getNextTenYearsString } from '../../../utils';
 
 interface NewProjectModalProps {
   opened: boolean;
   close: () => void;
+  // eslint-disable-next-line react/require-default-props
+  project?: Project;
 }
 
-function NewProjectModal({ opened, close }: NewProjectModalProps) {
+function ProjectModal({ opened, close, project }: NewProjectModalProps) {
   const form = useForm({
-    initialValues: {
-      nome: '',
-      coordenador: '',
+    initialValues: project || {
+      projeto: '',
+      coordenador: {
+        firstName: '',
+        lastName: '',
+        cpf: '',
+        email: '',
+        passwordHash: '',
+        role: '',
+        fullName: '',
+      },
       valorPrevisto: 0,
       valorExecutado: 0,
       valorSaldo: 0,
       valorTotal: 0,
       situacao: '',
-      observacoes: '',
-      anoExercicio: '',
-      anoInicioEmpenho: '',
-      anoFinalEmpenho: '',
+      observacao: '',
+      exercicio: 0,
+      anoInicioEmpenho: 0,
+      anoFimEmpenho: 0,
       itens: [
         {
           nome: '',
@@ -43,6 +54,7 @@ function NewProjectModal({ opened, close }: NewProjectModalProps) {
           valorSaldo: 0,
         },
       ],
+      resources: [],
     },
   });
 
@@ -67,7 +79,7 @@ function NewProjectModal({ opened, close }: NewProjectModalProps) {
             <Grid.Col span="auto">
               <TextInput
                 description="Nome do Projeto"
-                {...getInputProps('nome')}
+                {...getInputProps('projeto')}
               />
             </Grid.Col>
             <Grid.Col span="auto">
@@ -83,7 +95,7 @@ function NewProjectModal({ opened, close }: NewProjectModalProps) {
                 description="Exercício"
                 placeholder="Ano"
                 data={getNextTenYearsString()}
-                {...getInputProps('anoExercicio')}
+                {...getInputProps('exercicio')}
               />
             </Grid.Col>
             <Grid.Col span="auto">
@@ -99,7 +111,7 @@ function NewProjectModal({ opened, close }: NewProjectModalProps) {
                 description="Final Empenho"
                 placeholder="Ano"
                 data={getNextTenYearsString()}
-                {...getInputProps('anoFinalEmpenho')}
+                {...getInputProps('anoFimEmpenho')}
               />
             </Grid.Col>
           </Grid>
@@ -108,13 +120,13 @@ function NewProjectModal({ opened, close }: NewProjectModalProps) {
               <Textarea
                 rows={3}
                 description="Observações"
-                {...getInputProps('observacoes')}
+                {...getInputProps('observacao')}
               />
             </Grid.Col>
           </Grid>
           <Fieldset legend="Categorias">
             {values.itens.map((item, index) => (
-              <Grid>
+              <Grid key={item.id}>
                 <Grid.Col span="auto">
                   <TextInput
                     description="Nome"
@@ -199,12 +211,90 @@ function NewProjectModal({ opened, close }: NewProjectModalProps) {
               </Button>
             </Group>
           </Fieldset>
+          <Fieldset legend="Recursos">
+            {values.resources.map((resource, index) => (
+              <Stack mt={20} key={resource.id}>
+                {index !== 0 && <Divider my="sm" variant="dashed" />}
+                <Grid>
+                  <Grid.Col span="auto">
+                    <TextInput
+                      description="Nome"
+                      {...getInputProps(`resources.${index}.nome`)}
+                    />
+                  </Grid.Col>
+                  <Grid.Col span="auto">
+                    <TextInput
+                      description="especificoes"
+                      {...getInputProps(`resources.${index}.especificoes`)}
+                    />
+                  </Grid.Col>
+                </Grid>
+                <Grid>
+                  <Grid.Col span="auto">
+                    <TextInput
+                      description="Descrição"
+                      {...getInputProps(`resources.${index}.descricao`)}
+                    />
+                  </Grid.Col>
+                </Grid>
+                <Grid>
+                  <Grid.Col span="auto">
+                    <NumberInput
+                      description="Quantidade"
+                      {...getInputProps(`resources.${index}.quantidade`)}
+                      min={1}
+                      max={9999}
+                    />
+                  </Grid.Col>
+                  <Grid.Col span="auto">
+                    <NumberInput
+                      hideControls
+                      thousandSeparator="."
+                      decimalSeparator=","
+                      leftSection="R$"
+                      decimalScale={2}
+                      description="Valor"
+                      {...getInputProps(`resources.${index}.valor`)}
+                    />
+                  </Grid.Col>
+                  <Grid.Col
+                    span="content"
+                    style={{ display: 'flex', alignItems: 'end' }}
+                  >
+                    <ActionIcon
+                      color="red"
+                      size="lg"
+                      onClick={() => form.removeListItem('resources', index)}
+                    >
+                      <IconTrash size="1rem" />
+                    </ActionIcon>
+                  </Grid.Col>
+                </Grid>
+              </Stack>
+            ))}
+            <Group justify="center" mt="md">
+              <Button
+                variant="outline"
+                onClick={() =>
+                  form.insertListItem('resources', {
+                    nome: '',
+                    descricao: '',
+                    especificoes: '',
+                    quantidade: 1,
+                    valor: 0,
+                  })
+                }
+              >
+                Adicionar recurso
+              </Button>
+            </Group>
+          </Fieldset>
           <Group justify="flex-end">
             <Button onClick={handleClose} color="gray">
               Voltar
             </Button>
             <Button type="submit" color="green">
-              Criar Projeto
+              Salvar
             </Button>
           </Group>
         </Stack>
@@ -213,4 +303,4 @@ function NewProjectModal({ opened, close }: NewProjectModalProps) {
   );
 }
 
-export default NewProjectModal;
+export default ProjectModal;

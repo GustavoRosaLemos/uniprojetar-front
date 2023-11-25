@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import { loadingReducer } from './loading/loadingReducer';
-import { userReducer } from './user/userReducer';
+import { projectReducer } from './project/projectReducer';
 
 const reducers = combineReducers({
   loadingState: loadingReducer,
-  userState: userReducer,
+  projectState: projectReducer,
 });
 
 export type RootState = ReturnType<typeof reducers>;

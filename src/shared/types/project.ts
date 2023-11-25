@@ -1,17 +1,21 @@
+import { Coordinator } from './coordinator';
+import { Resource } from './resource';
+
 export interface Project {
   id?: number;
-  nome: string;
-  coordenador: string;
+  projeto: string;
+  coordenador: Coordinator;
   valorPrevisto: number;
   valorExecutado: number;
   valorSaldo: number;
   valorTotal: number;
   situacao: string;
-  anoExercicio: string;
-  anoInicioEmpenho: string;
-  anoFinalEmpenho: string;
-  observacoes: string;
+  observacao: string;
+  exercicio: number;
+  anoInicioEmpenho: number;
+  anoFimEmpenho: number;
   itens: ProjectItem[];
+  resources: Resource[];
 }
 
 export interface ProjectItem {

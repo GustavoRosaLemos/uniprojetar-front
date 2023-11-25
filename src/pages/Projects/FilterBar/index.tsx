@@ -1,7 +1,7 @@
 import { Button, Grid, Group, Input } from '@mantine/core';
 import { YearPickerInput } from '@mantine/dates';
 import { useDisclosure } from '@mantine/hooks';
-import NewProjectModal from './NewProjectModal';
+import ProjectModal from '../../../shared/components/ProjectModal';
 
 function FilterBar() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -31,7 +31,7 @@ function FilterBar() {
           Novo Projeto
         </Button>
       </Grid.Col>
-      <NewProjectModal opened={opened} close={close} />
+      <ProjectModal opened={opened} close={close} />
     </Grid>
   );
 }

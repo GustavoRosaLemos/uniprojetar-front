@@ -1,9 +1,14 @@
 import { Button, Center, Fieldset, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import { useNavigate } from 'react-router';
 import { Login } from '../../shared/types/user';
+import { useGetSession } from '../../store/hooks/sessionHooks';
 
 function LoginPage() {
+  const getSession = useGetSession();
+  const navigate = useNavigate();
+
   const form = useForm({
     initialValues: {
       email: '',
@@ -19,12 +24,22 @@ function LoginPage() {
   const { getInputProps, onSubmit } = form;
 
   const handleSubmit = (values: Login) => {
-    notifications.show({
-      title: 'Login',
-      message: 'Login realizado com sucesso!',
-      color: 'green',
-    });
-    console.log(values);
+    getSession(values)
+      .then(() => {
+        notifications.show({
+          title: 'Login',
+          message: 'Login realizado com sucesso!',
+          color: 'green',
+        });
+        navigate('/');
+      })
+      .catch(() =>
+        notifications.show({
+          title: 'Login',
+          message: 'Falha ao realizar login!',
+          color: 'red',
+        })
+      );
   };
 
   return (

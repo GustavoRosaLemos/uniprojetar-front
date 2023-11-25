@@ -1,4 +1,3 @@
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { MantineProvider, createTheme } from '@mantine/core';
@@ -20,14 +19,12 @@ const theme = createTheme({
 });
 
 root.render(
-  <React.StrictMode>
-    <MantineProvider theme={theme}>
-      <Notifications position="bottom-left" />
-      <BrowserRouter>
-        <RouterSwitch />
-      </BrowserRouter>
-    </MantineProvider>
-  </React.StrictMode>
+  <MantineProvider theme={theme}>
+    <Notifications position="bottom-left" />
+    <BrowserRouter>
+      <RouterSwitch />
+    </BrowserRouter>
+  </MantineProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
