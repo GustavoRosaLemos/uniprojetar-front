@@ -14,8 +14,8 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconTrash } from '@tabler/icons-react';
-import { Project } from '../../types/project';
-import { getNextTenYearsString } from '../../../utils';
+import { Project } from '../../../types/project';
+import { getNextTenYearsString } from '../../../../utils';
 
 interface NewProjectModalProps {
   opened: boolean;

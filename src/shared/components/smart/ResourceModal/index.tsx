@@ -9,16 +9,35 @@ import {
   Textarea,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { notifications } from '@mantine/notifications';
+import { useState } from 'react';
 import { Resource } from '../../../../shared/types/resource';
+import {
+  usePostResource,
+  usePutResouce,
+} from '../../../../store/hooks/resourceHooks';
+import Loading from '../../dumb/Loading';
 
 interface NewProjectModalProps {
   opened: boolean;
   close: () => void;
+  // eslint-disable-next-line react/require-default-props
+  resource?: Resource;
+  fetchResources: () => void;
 }
 
-function NewResourceModal({ opened, close }: NewProjectModalProps) {
+function ResourceModal({
+  opened,
+  close,
+  resource,
+  fetchResources,
+}: NewProjectModalProps) {
+  const [isLoading, setLoading] = useState<boolean>();
+  const postResource = usePostResource();
+  const putResource = usePutResouce();
+
   const form = useForm({
-    initialValues: {
+    initialValues: resource || {
       nome: '',
       descricao: '',
       especificoes: '',
@@ -34,6 +53,62 @@ function NewResourceModal({ opened, close }: NewProjectModalProps) {
     close();
   };
 
+  const handleSubmit = (values: Resource) => {
+    if (resource) {
+      if (!resource.id) {
+        notifications.show({
+          title: 'Falha ao editar recurso!',
+          message: 'Não foi possível localizar o id do recurso.',
+          color: 'red',
+        });
+        return;
+      }
+      setLoading(true);
+      putResource(resource.id, values)
+        .then(() => {
+          notifications.show({
+            title: 'Recurso',
+            message: 'Recurso editado com sucesso!',
+            color: 'green',
+          });
+          close();
+          fetchResources();
+        })
+        .catch(() =>
+          notifications.show({
+            title: 'Recurso',
+            message: 'Falha ao editar recurso!',
+            color: 'red',
+          })
+        )
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(true);
+      postResource(values)
+        .then(() => {
+          notifications.show({
+            title: 'Recurso',
+            message: 'Recurso adicionado com sucesso!',
+            color: 'green',
+          });
+          close();
+          fetchResources();
+        })
+        .catch(() =>
+          notifications.show({
+            title: 'Recurso',
+            message: 'Falha ao adicionar recurso!',
+            color: 'red',
+          })
+        )
+        .finally(() => setLoading(false));
+    }
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <Modal
       size="xl"
@@ -42,7 +117,7 @@ function NewResourceModal({ opened, close }: NewProjectModalProps) {
       title="Novo recurso"
       withCloseButton={false}
     >
-      <form onSubmit={onSubmit((v: Resource) => console.log(v))}>
+      <form onSubmit={onSubmit(handleSubmit)}>
         <Stack>
           <Grid>
             <Grid.Col span="auto">
@@ -85,7 +160,7 @@ function NewResourceModal({ opened, close }: NewProjectModalProps) {
               <Textarea
                 rows={3}
                 description="Especifícações"
-                {...getInputProps('especificacoes')}
+                {...getInputProps('especificoes')}
               />
             </Grid.Col>
           </Grid>
@@ -94,7 +169,7 @@ function NewResourceModal({ opened, close }: NewProjectModalProps) {
               Voltar
             </Button>
             <Button type="submit" color="green">
-              Cadastrar recurso
+              Salvar
             </Button>
           </Group>
         </Stack>
@@ -103,4 +178,4 @@ function NewResourceModal({ opened, close }: NewProjectModalProps) {
   );
 }
 
-export default NewResourceModal;
+export default ResourceModal;

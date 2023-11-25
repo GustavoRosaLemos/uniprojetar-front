@@ -22,7 +22,7 @@ import {
   useCancelProject,
   useContestProject,
 } from '../../../../store/hooks/projectHooks';
-import ProjectModal from '../../../../shared/components/ProjectModal';
+import ProjectModal from '../../../../shared/components/smart/ProjectModal';
 
 interface ProjectProps {
   project: Project;

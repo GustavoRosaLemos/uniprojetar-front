@@ -1,7 +1,7 @@
 import { Button, Grid, Group, Input } from '@mantine/core';
 import { YearPickerInput } from '@mantine/dates';
 import { useDisclosure } from '@mantine/hooks';
-import ProjectModal from '../../../shared/components/ProjectModal';
+import ProjectModal from '../../../shared/components/smart/ProjectModal';
 
 function FilterBar() {
   const [opened, { open, close }] = useDisclosure(false);

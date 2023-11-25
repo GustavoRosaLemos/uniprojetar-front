@@ -1,8 +1,12 @@
 import { Button, Grid, Group, Input } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import NewResourceModal from './NewResourceModal';
+import ResourceModal from '../../../shared/components/smart/ResourceModal';
 
-function FilterBar() {
+interface FilterBarProps {
+  fetchResources: () => void;
+}
+
+function FilterBar({ fetchResources }: FilterBarProps) {
   const [opened, { open, close }] = useDisclosure(false);
   return (
     <Grid pl={20} pr={20} pt={10} pb={10} align="end">
@@ -18,7 +22,11 @@ function FilterBar() {
           Novo Recurso
         </Button>
       </Grid.Col>
-      <NewResourceModal opened={opened} close={close} />
+      <ResourceModal
+        opened={opened}
+        close={close}
+        fetchResources={fetchResources}
+      />
     </Grid>
   );
 }
