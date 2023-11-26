@@ -6,3 +6,9 @@ export const requestLogin = async (login: Login) => {
 
   return requestService(url, login, {}, false, 'POST');
 };
+
+export const requestGetUsers = async () => {
+  const url = 'http://localhost:8080/users';
+
+  return requestService(url, {}, {});
+};

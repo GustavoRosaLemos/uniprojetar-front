@@ -2,8 +2,10 @@ import { Button, Center, Fieldset, Stack, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { useNavigate } from 'react-router';
+import { useEffect } from 'react';
 import { Login } from '../../shared/types/user';
 import { useGetSession } from '../../store/hooks/sessionHooks';
+import { clearLocalParams } from '../../utils/session';
 
 function LoginPage() {
   const getSession = useGetSession();
@@ -42,6 +44,10 @@ function LoginPage() {
       );
   };
 
+  useEffect(() => {
+    clearLocalParams();
+  }, []);
+
   return (
     <Center w="100vw" h="100vh" bg="var(--mantine-color-gray-light)">
       <Fieldset legend="Login" w={500}>
@@ -54,6 +60,7 @@ function LoginPage() {
               {...getInputProps('email')}
             />
             <TextInput
+              type="password"
               description="Senha"
               placeholder="Senha"
               {...getInputProps('password')}

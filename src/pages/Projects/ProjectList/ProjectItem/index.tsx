@@ -13,6 +13,7 @@ import {
 import { BsFileEarmarkText } from 'react-icons/bs';
 import { notifications } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
+import { useState } from 'react';
 import { Project } from '../../../../shared/types/project';
 import CustomTable from '../../../../shared/components/custom/CustomTable';
 import { currencyBRL } from '../../../../utils';
@@ -23,15 +24,16 @@ import {
   useContestProject,
 } from '../../../../store/hooks/projectHooks';
 import ProjectModal from '../../../../shared/components/smart/ProjectModal';
+import Loading from '../../../../shared/components/dumb/Loading';
 
 interface ProjectProps {
   project: Project;
   // eslint-disable-next-line no-unused-vars
-  setLoading: (state: boolean) => void;
   fetchProjects: () => void;
 }
 
-function ProjectItem({ project, setLoading, fetchProjects }: ProjectProps) {
+function ProjectItem({ project, fetchProjects }: ProjectProps) {
+  const [loading, setLoading] = useState(false);
   const [opened, { open, close }] = useDisclosure(false);
   const cancelProject = useCancelProject();
   const approveProject = useApproveProject();
@@ -123,6 +125,10 @@ function ProjectItem({ project, setLoading, fetchProjects }: ProjectProps) {
       )
       .finally(() => setLoading(false));
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -328,7 +334,13 @@ function ProjectItem({ project, setLoading, fetchProjects }: ProjectProps) {
             >
               Contestar
             </Button>
-            <Button disabled={project.situacao === 'Cancelado'} onClick={open}>
+            <Button
+              disabled={
+                project.situacao === 'Cancelado' ||
+                project.situacao === 'Aprovado'
+              }
+              onClick={open}
+            >
               Editar
             </Button>
             <Button
@@ -344,7 +356,12 @@ function ProjectItem({ project, setLoading, fetchProjects }: ProjectProps) {
           </Group>
         </Accordion.Panel>
       </Accordion.Item>
-      <ProjectModal opened={opened} close={close} project={project} />
+      <ProjectModal
+        opened={opened}
+        close={close}
+        project={project}
+        fetchProjects={fetchProjects}
+      />
     </>
   );
 }

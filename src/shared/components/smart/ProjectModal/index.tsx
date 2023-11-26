@@ -14,17 +14,38 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconTrash } from '@tabler/icons-react';
+import { useState } from 'react';
+import { notifications } from '@mantine/notifications';
+import { useNavigate } from 'react-router';
 import { Project } from '../../../types/project';
 import { getNextTenYearsString } from '../../../../utils';
+import { useSession } from '../../../../store/hooks/sessionHooks';
+import {
+  usePostProject,
+  usePutProject,
+} from '../../../../store/hooks/projectHooks';
+import Loading from '../../dumb/Loading';
 
 interface NewProjectModalProps {
   opened: boolean;
   close: () => void;
   // eslint-disable-next-line react/require-default-props
   project?: Project;
+  fetchProjects: () => void;
 }
 
-function ProjectModal({ opened, close, project }: NewProjectModalProps) {
+function ProjectModal({
+  opened,
+  close,
+  project,
+  fetchProjects,
+}: NewProjectModalProps) {
+  const [loading, setLoading] = useState(false);
+  const postProject = usePostProject();
+  const putProject = usePutProject();
+  const navigate = useNavigate();
+  const session = useSession();
+
   const form = useForm({
     initialValues: project || {
       projeto: '',
@@ -67,6 +88,95 @@ function ProjectModal({ opened, close, project }: NewProjectModalProps) {
     close();
   };
 
+  const handleSubmit = () => {
+    if (project) {
+      if (!project.id) {
+        notifications.show({
+          title: 'Falha ao editar projeto!',
+          message: 'Não foi possível localizar o id do projeto.',
+          color: 'red',
+        });
+        return;
+      }
+      setLoading(true);
+      putProject(project.id, values)
+        .then(() => {
+          notifications.show({
+            title: 'Projeto',
+            message: 'Projeto modificado com sucesso!',
+            color: 'green',
+          });
+          handleClose();
+          fetchProjects();
+        })
+        .catch(() =>
+          notifications.show({
+            title: 'Projeto',
+            message: 'Não foi possível modificar o projeto.',
+            color: 'red',
+          })
+        )
+        .finally(() => setLoading(false));
+    } else {
+      if (!session || !session.user) {
+        notifications.show({
+          title: 'Sessão não encontrada!',
+          message: 'Por favor realize login novamente.',
+          color: 'red',
+        });
+        navigate('/login');
+        return;
+      }
+      const {
+        cpf,
+        email,
+        firstName,
+        fullName,
+        lastName,
+        password,
+        passwordHash,
+        id,
+        role,
+      } = session.user;
+      setLoading(true);
+      postProject({
+        ...values,
+        coordenador: {
+          cpf,
+          email,
+          firstName,
+          fullName: fullName ?? '',
+          lastName,
+          passwordHash: passwordHash ?? '',
+          role,
+          id,
+          password,
+        },
+      })
+        .then(() => {
+          notifications.show({
+            title: 'Projeto',
+            message: 'Projeto criado com sucesso!',
+            color: 'green',
+          });
+          close();
+          fetchProjects();
+        })
+        .catch(() =>
+          notifications.show({
+            title: 'Projeto',
+            message: 'Não foi possível criar o projeto.',
+            color: 'red',
+          })
+        )
+        .finally(() => setLoading(false));
+    }
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <Modal
       size="xl"
@@ -75,19 +185,13 @@ function ProjectModal({ opened, close, project }: NewProjectModalProps) {
       title="Novo projeto"
       withCloseButton={false}
     >
-      <form onSubmit={onSubmit((v: Project) => console.log(v))}>
+      <form onSubmit={onSubmit(handleSubmit)}>
         <Stack>
           <Grid>
             <Grid.Col span="auto">
               <TextInput
                 description="Nome do Projeto"
                 {...getInputProps('projeto')}
-              />
-            </Grid.Col>
-            <Grid.Col span="auto">
-              <TextInput
-                description="Coordenador"
-                {...getInputProps('coordenador')}
               />
             </Grid.Col>
           </Grid>

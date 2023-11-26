@@ -1,7 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useCallback } from 'react';
 import { RootState } from '../reducers';
-import { requestGetProjects, requestPutProject } from '../../service/project';
+import {
+  requestGetProjects,
+  requestPostProject,
+  requestPutProject,
+} from '../../service/project';
 import * as projectActions from '../project/projectAction';
 import { Project } from '../../shared/types/project';
 
@@ -32,4 +36,14 @@ export const useApproveProject = () =>
 export const useContestProject = () =>
   useCallback(async (projectId: number, project: Project) => {
     await requestPutProject(projectId, { ...project, situacao: 'Contestado' });
+  }, []);
+
+export const usePutProject = () =>
+  useCallback(async (projectId: number, project: Project) => {
+    await requestPutProject(projectId, project);
+  }, []);
+
+export const usePostProject = () =>
+  useCallback(async (project: Project) => {
+    await requestPostProject(project);
   }, []);

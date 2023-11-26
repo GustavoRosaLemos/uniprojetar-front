@@ -91,7 +91,7 @@ function ResourceModal({
             message: 'Recurso adicionado com sucesso!',
             color: 'green',
           });
-          close();
+          handleClose();
           fetchResources();
         })
         .catch(() =>

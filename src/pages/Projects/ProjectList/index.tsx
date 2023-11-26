@@ -1,28 +1,15 @@
 import { Accordion, Flex } from '@mantine/core';
-import { useCallback, useEffect, useState } from 'react';
 import InitialScale from '../../../shared/animations/InitialScale';
 import ProjectItem from './ProjectItem';
-import { useGetProjects, useProjects } from '../../../store/hooks/projectHooks';
-import Loading from '../../../shared/components/loading';
+import { Project } from '../../../shared/types/project';
 
-function ProjectList() {
-  const [loading, setLoading] = useState(true);
-  const getProjects = useGetProjects();
-  const projects = useProjects();
+interface ProjectListProps {
+  // eslint-disable-next-line react/require-default-props
+  projects?: Project[];
+  fetchProjects: () => void;
+}
 
-  const fetchProjects = useCallback(() => {
-    getProjects()
-      .then(() => setLoading(false))
-      .finally(() => setLoading(false));
-  }, []);
-  useEffect(() => {
-    fetchProjects();
-  }, []);
-
-  if (loading) {
-    return <Loading />;
-  }
-
+function ProjectList({ projects, fetchProjects }: ProjectListProps) {
   return (
     <InitialScale>
       <Flex justify="center" p="lg">
@@ -32,7 +19,6 @@ function ProjectList() {
               <ProjectItem
                 key={project.id}
                 project={project}
-                setLoading={setLoading}
                 fetchProjects={fetchProjects}
               />
             ))}
