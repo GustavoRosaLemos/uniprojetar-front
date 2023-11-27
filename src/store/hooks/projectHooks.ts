@@ -7,20 +7,33 @@ import {
   requestPutProject,
 } from '../../service/project';
 import * as projectActions from '../project/projectAction';
-import { Project } from '../../shared/types/project';
+import { Project, ProjectFilters } from '../../shared/types/project';
 
 const useProjectState = () =>
   useSelector((rootState: RootState) => rootState.projectState);
 
 export const useProjects = () => useProjectState().projects;
 
+export const useFilters = () => useProjectState().filters;
+
+export const useSetFilters = () => {
+  const dispatch = useDispatch();
+
+  return useCallback((filters?: ProjectFilters) => {
+    dispatch(projectActions.setFilters(filters));
+  }, []);
+};
+
 export const useGetProjects = () => {
   const dispatch = useDispatch();
 
-  return useCallback(async () => {
-    const result = await requestGetProjects();
-    dispatch(projectActions.getProjects(result));
-  }, [dispatch]);
+  return useCallback(
+    async (filters?: ProjectFilters) => {
+      const result = await requestGetProjects(filters);
+      dispatch(projectActions.getProjects(result));
+    },
+    [dispatch]
+  );
 };
 
 export const useCancelProject = () =>

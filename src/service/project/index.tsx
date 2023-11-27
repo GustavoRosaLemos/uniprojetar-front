@@ -1,8 +1,9 @@
-import { Project } from '../../shared/types/project';
+import { Project, ProjectFilters } from '../../shared/types/project';
+import { getQueryParams } from '../../utils';
 import { requestService } from '../../utils/requestService';
 
-export const requestGetProjects = async () => {
-  const url = 'http://localhost:8080/projects';
+export const requestGetProjects = async (queryParams?: ProjectFilters) => {
+  const url = `http://localhost:8080/projects${getQueryParams(queryParams)}`;
   return requestService(url, {}, {}, false, 'GET');
 };
 

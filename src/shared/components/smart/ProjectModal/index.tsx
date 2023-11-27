@@ -17,7 +17,7 @@ import { IconTrash } from '@tabler/icons-react';
 import { useState } from 'react';
 import { notifications } from '@mantine/notifications';
 import { useNavigate } from 'react-router';
-import { Project } from '../../../types/project';
+import { Project, ProjectFilters } from '../../../types/project';
 import { getNextTenYearsString } from '../../../../utils';
 import { useSession } from '../../../../store/hooks/sessionHooks';
 import {
@@ -31,7 +31,8 @@ interface NewProjectModalProps {
   close: () => void;
   // eslint-disable-next-line react/require-default-props
   project?: Project;
-  fetchProjects: () => void;
+  // eslint-disable-next-line no-unused-vars
+  fetchProjects: (filters?: ProjectFilters) => void;
 }
 
 function ProjectModal({

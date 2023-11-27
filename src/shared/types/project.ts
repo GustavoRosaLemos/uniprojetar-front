@@ -18,6 +18,15 @@ export interface Project {
   resources: Resource[];
 }
 
+export interface ProjectFilters {
+  projeto?: string;
+  anoFimEmpenho?: string;
+  coordenador?: string;
+  anoInicioEmpenho?: string;
+  exercicio?: string;
+  situacao?: string;
+}
+
 export interface ProjectItem {
   id?: number;
   projectId?: number;

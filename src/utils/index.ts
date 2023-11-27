@@ -13,3 +13,34 @@ export const getNextTenYearsString = () => {
 
   return futureYears;
 };
+
+export const getPreviusAndNextTenYearsString = () => {
+  const currentYear = new Date().getFullYear();
+  const futureYears: string[] = [];
+
+  // eslint-disable-next-line no-plusplus
+  for (let i = -10; i < 20; i++) {
+    const year = currentYear + i;
+    futureYears.push(year.toString());
+  }
+
+  return futureYears;
+};
+
+export const getQueryParams = (value?: Object) => {
+  let query = '';
+  if (!value) {
+    return query;
+  }
+
+  Object.entries(value).forEach((v) => {
+    if (v[1]) {
+      if (query === '') {
+        query += `?${v[0]}=${v[1]}`;
+      } else {
+        query += `&${v[0]}=${v[1]}`;
+      }
+    }
+  });
+  return query;
+};

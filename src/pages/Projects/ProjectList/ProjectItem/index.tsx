@@ -257,15 +257,17 @@ function ProjectItem({ project, fetchProjects }: ProjectProps) {
           <Fieldset legend="Recursos">
             <CustomTable highlightOnHover withRowBorders={false}>
               <CustomTable.Thead>
-                <CustomTable.Th>Nome</CustomTable.Th>
-                <CustomTable.Th>Descrição</CustomTable.Th>
-                <CustomTable.Th>Especifícações</CustomTable.Th>
-                <CustomTable.Th>Quantidade</CustomTable.Th>
-                <CustomTable.Th>Valor</CustomTable.Th>
+                <CustomTable.Tr>
+                  <CustomTable.Th>Nome</CustomTable.Th>
+                  <CustomTable.Th>Descrição</CustomTable.Th>
+                  <CustomTable.Th>Especifícações</CustomTable.Th>
+                  <CustomTable.Th>Quantidade</CustomTable.Th>
+                  <CustomTable.Th>Valor</CustomTable.Th>
+                </CustomTable.Tr>
               </CustomTable.Thead>
               <CustomTable.Tbody>
                 {project.resources.map((resource) => (
-                  <CustomTable.Tr>
+                  <CustomTable.Tr key={resource.id}>
                     <CustomTable.Td>{resource.nome}</CustomTable.Td>
                     <CustomTable.Td>{resource.descricao}</CustomTable.Td>
                     <CustomTable.Td>{resource.especificoes}</CustomTable.Td>

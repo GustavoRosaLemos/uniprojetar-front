@@ -5,14 +5,16 @@ import ProjectList from './ProjectList';
 import FilterBar from './FilterBar';
 import { useGetProjects, useProjects } from '../../store/hooks/projectHooks';
 import Loading from '../../shared/components/dumb/Loading';
+import { ProjectFilters } from '../../shared/types/project';
 
 function ProjectsPage() {
   const [loading, setLoading] = useState(true);
   const getProjects = useGetProjects();
   const projects = useProjects();
 
-  const fetchProjects = useCallback(() => {
-    getProjects()
+  const fetchProjects = useCallback((filters?: ProjectFilters) => {
+    setLoading(true);
+    getProjects(filters)
       .then(() => setLoading(false))
       .finally(() => setLoading(false));
   }, []);
