@@ -4,15 +4,23 @@ import Header from '../../shared/components/dumb/Header';
 import ResourceList from './ResourceList';
 import FilterBar from './FilterBar';
 import Loading from '../../shared/components/dumb/Loading';
-import { useGetResources, useResources } from '../../store/hooks/resourceHooks';
+import {
+  useGetResources,
+  useResources,
+  useSetFilters,
+} from '../../store/hooks/resourceHooks';
+import { ResourceFilters } from '../../shared/types/resource';
 
 function ResourcesPage() {
   const [loading, setLoading] = useState(true);
+  const setFilters = useSetFilters();
   const getResources = useGetResources();
   const resources = useResources();
 
-  const fetchResources = useCallback(() => {
-    getResources().finally(() => setLoading(false));
+  const fetchResources = useCallback((filters?: ResourceFilters) => {
+    setLoading(true);
+    setFilters(filters);
+    getResources(filters).finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {

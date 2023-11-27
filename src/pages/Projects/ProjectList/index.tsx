@@ -13,7 +13,7 @@ function ProjectList({ projects, fetchProjects }: ProjectListProps) {
   return (
     <InitialScale>
       <Flex justify="center" p="lg">
-        <Accordion variant="separated">
+        <Accordion variant="separated" w="100vw">
           {projects &&
             projects.map((project) => (
               <ProjectItem

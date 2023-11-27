@@ -6,7 +6,7 @@ import ProjectModal from '../../../shared/components/smart/ProjectModal';
 import { ProjectFilters } from '../../../shared/types/project';
 import { getPreviusAndNextTenYearsString } from '../../../utils';
 import { PROJECT_STATUS } from '../../../shared/constants/status';
-import { useFilters, useSetFilters } from '../../../store/hooks/projectHooks';
+import { useFilters } from '../../../store/hooks/projectHooks';
 
 interface FilterBarProps {
   // eslint-disable-next-line no-unused-vars
@@ -15,7 +15,6 @@ interface FilterBarProps {
 
 function FilterBar({ fetchProjects }: FilterBarProps) {
   const [opened, { open, close }] = useDisclosure(false);
-  const setFilters = useSetFilters();
   const filters = useFilters();
 
   const initialValues: ProjectFilters = filters ?? {
@@ -34,7 +33,6 @@ function FilterBar({ fetchProjects }: FilterBarProps) {
   const { getInputProps, onSubmit, values, setFieldValue } = form;
 
   const handleSubmit = (v: any) => {
-    setFilters(v);
     fetchProjects(v);
   };
 

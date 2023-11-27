@@ -6,3 +6,7 @@ export interface Resource {
   quantidade: number;
   valor: number;
 }
+
+export interface ResourceFilters {
+  nome?: string;
+}

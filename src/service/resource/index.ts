@@ -1,8 +1,9 @@
-import { Resource } from '../../shared/types/resource';
+import { Resource, ResourceFilters } from '../../shared/types/resource';
+import { getQueryParams } from '../../utils';
 import { requestService } from '../../utils/requestService';
 
-export const requestGetResources = async () => {
-  const url = 'http://localhost:8080/recurso';
+export const requestGetResources = async (filters?: ResourceFilters) => {
+  const url = `http://localhost:8080/recurso${getQueryParams(filters)}`;
   return requestService(url, {}, {});
 };
 
