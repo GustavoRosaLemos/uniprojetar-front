@@ -44,3 +44,14 @@ export const getQueryParams = (value?: Object) => {
   });
   return query;
 };
+
+export const getInitials = (value?: string) => {
+  if (!value) {
+    return '';
+  }
+
+  const splitedValue = value.split(' ');
+  const size = splitedValue.length;
+
+  return splitedValue[0].slice(0, 1) + splitedValue[size - 1].slice(0, 1);
+};

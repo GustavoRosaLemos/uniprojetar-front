@@ -2,6 +2,7 @@ import { Flex, Menu, Text } from '@mantine/core';
 import { IoIosArrowUp } from 'react-icons/io';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
+import { useSession } from '../../../../../../store/hooks/sessionHooks';
 
 interface UserOptionsMenuProps {
   // eslint-disable-next-line react/require-default-props
@@ -10,13 +11,15 @@ interface UserOptionsMenuProps {
 
 function UserOptionsMenu({ className }: UserOptionsMenuProps) {
   const navigate = useNavigate();
+  const session = useSession();
+
   return (
     <div className={className}>
       <Menu shadow="md" width={200}>
         <Menu.Target>
           <Flex align="center" style={{ cursor: 'pointer' }}>
             <Text id="userText" c="white">
-              Mike Wazowski
+              {session?.user.fullName}
             </Text>
             <IoIosArrowUp size="20" color="white" />
           </Flex>
