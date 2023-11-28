@@ -331,7 +331,7 @@ function ProjectModal({
                   </Grid.Col>
                   <Grid.Col span="auto">
                     <TextInput
-                      description="especificoes"
+                      description="especifícações"
                       {...getInputProps(`resources.${index}.especificoes`)}
                     />
                   </Grid.Col>
