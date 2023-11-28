@@ -6,6 +6,7 @@ import ResourcesPage from '../pages/Resources';
 import MeasurementsPage from '../pages/Measurements';
 import HomePage from '../pages/Home';
 import { useSession } from '../store/hooks/sessionHooks';
+import UserPage from '../pages/UserPage';
 
 function AuthenticatedRoutes() {
   const session = useSession();
@@ -26,6 +27,7 @@ function AuthenticatedRoutes() {
       <Route path="/projetos" element={<ProjectsPage />} />
       <Route path="/recursos" element={<ResourcesPage />} />
       <Route path="/metricas" element={<MeasurementsPage />} />
+      <Route path="/user" element={<UserPage />} />
       <Route path="/" element={<HomePage />} />
     </Routes>
   );

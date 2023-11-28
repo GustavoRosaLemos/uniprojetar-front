@@ -27,7 +27,7 @@ function UserOptionsMenu({ className }: UserOptionsMenuProps) {
 
         <Menu.Dropdown>
           <Menu.Label>Perfil</Menu.Label>
-          <Menu.Item>Configurações</Menu.Item>
+          <Menu.Item onClick={() => navigate('/user')}>Configurações</Menu.Item>
           <Menu.Divider />
           <Menu.Item onClick={() => navigate('/login')}>Sair</Menu.Item>
         </Menu.Dropdown>
