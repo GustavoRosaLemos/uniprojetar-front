@@ -53,5 +53,7 @@ export const getInitials = (value?: string) => {
   const splitedValue = value.split(' ');
   const size = splitedValue.length;
 
-  return splitedValue[0].slice(0, 1) + splitedValue[size - 1].slice(0, 1);
+  return (
+    splitedValue[0].slice(0, 1) + splitedValue[size - 1].slice(0, 1)
+  ).toLocaleUpperCase();
 };
