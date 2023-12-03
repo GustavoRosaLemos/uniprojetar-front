@@ -19,3 +19,8 @@ export const useGetSession = () =>
     const auth = await requestLogin(login);
     saveLocalParam('session', JSON.stringify(auth));
   }, []);
+
+export const useCheckSession = () =>
+  useCallback(async (login: Login) => {
+    await requestLogin(login);
+  }, []);

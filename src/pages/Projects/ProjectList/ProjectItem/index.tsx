@@ -25,6 +25,8 @@ import {
 } from '../../../../store/hooks/projectHooks';
 import ProjectModal from '../../../../shared/components/smart/ProjectModal';
 import Loading from '../../../../shared/components/dumb/Loading';
+import { useSession } from '../../../../store/hooks/sessionHooks';
+import PasswordConfirmationModal from '../../../../shared/components/smart/PasswordConfirmationModal';
 
 interface ProjectProps {
   project: Project;
@@ -34,10 +36,12 @@ interface ProjectProps {
 
 function ProjectItem({ project, fetchProjects }: ProjectProps) {
   const [loading, setLoading] = useState(false);
+  const [openedPasswordModal, passwordModalOptions] = useDisclosure(false);
   const [opened, { open, close }] = useDisclosure(false);
   const cancelProject = useCancelProject();
   const approveProject = useApproveProject();
   const contestProject = useContestProject();
+  const session = useSession();
 
   const handleCancelProject = () => {
     if (!project.id) {
@@ -188,16 +192,8 @@ function ProjectItem({ project, fetchProjects }: ProjectProps) {
               <Text c="#BDBDBD" fw="600">
                 Saldo
               </Text>
-              <Text c="#7A7A7A" fw="bold">
-                {currencyBRL(project.valorSaldo)}
-              </Text>
-            </Flex>
-            <Flex direction="column">
-              <Text c="#BDBDBD" fw="600">
-                Total
-              </Text>
               <Text c="#219653" fw="bold">
-                {currencyBRL(project.valorTotal)}
+                {currencyBRL(project.valorSaldo)}
               </Text>
             </Flex>
           </Group>
@@ -349,9 +345,12 @@ function ProjectItem({ project, fetchProjects }: ProjectProps) {
               color="green"
               disabled={
                 project.situacao === 'Cancelado' ||
-                project.situacao === 'Aprovado'
+                project.situacao === 'Aprovado' ||
+                !session ||
+                !session.user ||
+                session.user.role !== 'DIRETOR'
               }
-              onClick={handleApproveProject}
+              onClick={() => passwordModalOptions.open()}
             >
               Aprovar
             </Button>
@@ -363,6 +362,11 @@ function ProjectItem({ project, fetchProjects }: ProjectProps) {
         close={close}
         project={project}
         fetchProjects={fetchProjects}
+      />
+      <PasswordConfirmationModal
+        opened={openedPasswordModal}
+        close={() => passwordModalOptions.close()}
+        handleConfirm={handleApproveProject}
       />
     </>
   );
